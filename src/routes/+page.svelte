@@ -1,29 +1,39 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { onDestroy } from 'svelte';
+	import type { AgeEstimation, AgeData } from '$lib/types';
 
-	export let data: {
-		name: string;
-		data: {
-			name: string;
-			age: number;
-			count: number;
-		} | null;
-	};
+	export let data: AgeEstimation;
 
 	let inputName = data.name ?? '';
-	let debounceTimer: ReturnType<typeof setTimeout>;
+	let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+	function navigateToName(name: string, delay = 800) {
+		if (debounceTimer) clearTimeout(debounceTimer);
+
+		const trimmed = name.trim();
+		if (!trimmed) {
+			goto('/', { replaceState: true });
+			return;
+		}
+
+		debounceTimer = setTimeout(() => {
+			goto(`/?name=${encodeURIComponent(trimmed)}`, { replaceState: true });
+		}, delay);
+	}
 
 	$: if (inputName !== data.name) {
-		clearTimeout(debounceTimer);
-
-		if (inputName.trim() === '') {
-			goto('/', { replaceState: true });
-		} else {
-			debounceTimer = setTimeout(() => {
-				goto(`/?name=${encodeURIComponent(inputName)}`, { replaceState: true });
-			}, 800);
-		}
+		navigateToName(inputName);
 	}
+
+	onDestroy(() => {
+		if (debounceTimer) clearTimeout(debounceTimer);
+	});
+
+	const isNameEmpty = () => data.name.trim().length === 0;
+
+	const hasAgeEstimate = (d: AgeEstimation): d is { name: string; data: AgeData } =>
+		!!d.data && typeof d.data.age === 'number';
 </script>
 
 <main>
@@ -36,11 +46,12 @@
 		autocomplete="off"
 	/>
 
-	{#if data.name.trim() === ''}
+	{#if isNameEmpty()}
 		<p class="muted">Digite um nome para estimar a idade.</p>
-	{:else if data?.data?.age}
+	{:else if hasAgeEstimate(data)}
 		<p>
-			O nome <strong>{data.name}</strong> tem uma idade média de <strong>{data.data.age}</strong> anos.
+			O nome <strong>{data.name}</strong> tem uma idade média de
+			<strong>{data.data.age}</strong> anos.
 		</p>
 	{:else}
 		<p class="muted">Nenhuma estimativa encontrada para <strong>{data.name}</strong>.</p>
