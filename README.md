@@ -1,38 +1,32 @@
-# sv
+# Projeto SvelteKit – Estimativa de Idade
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Este é um projeto desenvolvido com [SvelteKit](https://kit.svelte.dev/) que permite estimar a idade de uma pessoa com base no nome informado. A aplicação realiza o redirecionamento automaticamente após o usuário digitar, utilizando a técnica de debounce para evitar requisições excessivas.
 
-## Creating a project
+## ✨ Tecnologias Utilizadas
 
-If you're seeing this, you've probably already done this step. Congrats!
+- [SvelteKit](https://kit.svelte.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [pnpm](https://pnpm.io/)
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
-```bash
-# create a new project in the current directory
-npx sv create
+---
 
-# create a new project in my-app
-npx sv create my-app
-```
+## 🚀 Como Executar o Projeto
 
-## Developing
+A forma recomendada de executar o projeto é utilizando **Docker Compose**, garantindo consistência e facilidade no ambiente de desenvolvimento.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### 🔧 Pré-requisitos
 
-```bash
-npm run dev
+- [Docker](https://www.docker.com/get-started) instalado
+- [Docker Compose](https://docs.docker.com/compose/install/) disponível
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+---
 
-## Building
-
-To create a production version of your app:
+### ▶️ Passos para rodar a aplicação
 
 ```bash
-npm run build
+git clone https://github.com/seu-usuario/seu-repositorio.git
+cd seu-repositorio
+docker compose up
 ```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
