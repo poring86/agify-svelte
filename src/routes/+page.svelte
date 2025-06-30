@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 
 	export let data: {
@@ -8,7 +7,7 @@
 			name: string;
 			age: number;
 			count: number;
-		};
+		} | null;
 	};
 
 	let inputName = data.name ?? '';
@@ -36,7 +35,9 @@
 		placeholder="Digite um nome..."
 	/>
 
-	{#if data?.data?.age}
+	{#if data.name.trim() === ''}
+		<p>Digite um nome para estimar a idade.</p>
+	{:else if data?.data?.age}
 		<p>
 			O nome <strong>{data.name}</strong> tem idade média de <strong>{data.data.age}</strong> anos.
 		</p>
@@ -58,5 +59,11 @@
 		margin-bottom: 1rem;
 		border: 2px solid #ccc;
 		border-radius: 5px;
+	}
+	p {
+		font-size: 1.1rem;
+	}
+	strong {
+		font-weight: bold;
 	}
 </style>
